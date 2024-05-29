@@ -13,8 +13,8 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image/stb_image.h"
-#include "stb_image/stb_image_write.h"
+#include "ext/stb_image/stb_image.h"
+#include "ext/stb_image/stb_image_write.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -24,8 +24,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-
-extern inline float EXPOSURE = 0.5f;
 
 template <typename T>
 class HdriToCubemap
@@ -216,11 +214,11 @@ void HdriToCubemap<T>::calculateCubemap()
 
                     for (int j = 0; j < m_channels; j++)
                     {   
-                        unsigned char interpolatedValue = static_cast<unsigned char>(m_imageData[low_idx_column * m_channels + m_width * low_idx_row * m_channels + j] * f1 + 
+                        float interpolatedValue = static_cast<float>(m_imageData[low_idx_column * m_channels + m_width * low_idx_row * m_channels + j] * f1 + 
                                                     m_imageData[low_idx_column * m_channels + m_width * high_idx_row * m_channels + j] * f2 + 
                                                     m_imageData[high_idx_column * m_channels + m_width * low_idx_row * m_channels + j] * f3 + 
                                                     m_imageData[high_idx_column * m_channels + m_width * high_idx_row * m_channels + j] * f4);
-                        face[col * m_channels + m_cubemapResolution * row * m_channels + j] = std::clamp(interpolatedValue, (uint8_t)0, (uint8_t)255);
+                        face[col * m_channels + m_cubemapResolution * row * m_channels + j] = interpolatedValue;
                     }
                 }
             }
@@ -251,9 +249,9 @@ void HdriToCubemap<T>::calculateCubemap()
         int idx = 0;
         for (int i = 0; i < m_width * m_height; i++)
         {
-            data[idx++] = m_imageData[i * 3] * EXPOSURE;
-            data[idx++] = m_imageData[i * 3 + 1] * EXPOSURE;
-            data[idx++] = m_imageData[i * 3 + 2] * EXPOSURE;
+            data[idx++] = m_imageData[i * 3];
+            data[idx++] = m_imageData[i * 3 + 1];
+            data[idx++] = m_imageData[i * 3 + 2];
             data[idx++] = (T)255; //TODO: depends on whether type is float or unsigned char!!
         }
         delete[] m_imageData;

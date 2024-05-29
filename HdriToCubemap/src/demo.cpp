@@ -1,20 +1,11 @@
-#include "HdriToCubemap.hpp"
+#include "../HdriToCubemap.hpp"
 
 int main(int argc, const char* argv[])
 {
     if (argc < 2)
     {
-        printf("Arguments: filename [savedir] [exposure]");
+        printf("Arguments: filename [savedir]");
         return 0;
-    }
-    if (argc > 3)
-    {
-        EXPOSURE = std::stof(argv[3]);
-        if (EXPOSURE < 0.0)
-        {
-            printf("Invalid exposure");
-            return 0;
-        }
     }
     std::string savepath = "";
     if (argc > 2)

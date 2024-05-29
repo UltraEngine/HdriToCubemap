@@ -1,3 +1,0 @@
-[submodule "HdriToCubemap/stb_image"]
-	path = HdriToCubemap/ext/stb_image
-	url = https://github.com/nothings/stb.git
